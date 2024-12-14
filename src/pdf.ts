@@ -77,7 +77,7 @@ Respond with JSON where the key is from the keys provided where the relevant dat
 
 console.log(systemMessage)
 
-Deno.exit(0)
+// Deno.exit(0)
 
 const response = await openai.chat.completions.create({
     model: "gpt-4o",
