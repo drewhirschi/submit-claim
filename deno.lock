@@ -5,6 +5,7 @@
     "npm:@supabase/supabase-js@*": "2.47.3",
     "npm:@supabase/supabase-js@^2.47.3": "2.47.3",
     "npm:@types/node@*": "22.5.4",
+    "npm:node-qpdf2@6": "6.0.0",
     "npm:openai@*": "4.76.0",
     "npm:openai@^4.76.0": "4.76.0",
     "npm:pdf-lib@*": "1.17.1",
@@ -178,6 +179,9 @@
         "whatwg-url"
       ]
     },
+    "node-qpdf2@6.0.0": {
+      "integrity": "sha512-ys8KADQ7xx7K6cgtjDjfvsjRQA0gUWxiynTvvzSxTpRnUpA0KADPx/HRt67dJGIj69t76rz4aQl8OEd67yTX/g=="
+    },
     "openai@4.76.0": {
       "integrity": "sha512-QBGIetjX1C9xDp5XGa/3mPnfKI9BgAe2xHQX6PmO98wuW9qQaurBaumcYptQWc9LHZZq7cH/Y1Rjnsr6uUDdVw==",
       "dependencies": [
@@ -234,6 +238,7 @@
   "workspace": {
     "dependencies": [
       "npm:@supabase/supabase-js@^2.47.3",
+      "npm:node-qpdf2@6",
       "npm:openai@^4.76.0",
       "npm:pdf-lib@^1.17.1"
     ]

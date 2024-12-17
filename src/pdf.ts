@@ -1,26 +1,40 @@
 import "jsr:@std/dotenv/load";
 
-import { CheckBoxOption, fillAndSavePdfForm, readPdfFormFields, setupAcroFieldCheckBox } from "./pdf.helpers.ts";
+import { CheckBoxOption, fillAndSavePdfForm, prepareImageDataUrl, readPdfFormFields, setupAcroFieldCheckBox } from "./pdf.helpers.ts";
+import { decrypt, info } from "node-qpdf2";
 
 import OpenAI from "npm:openai";
-import { prepareImageDataUrl } from "./pdf.helpers.ts";
-
-// import { createClient } from 'npm:@supabase/supabase-js'
 
 const openai = new OpenAI({
     apiKey: Deno.env.get("OPENAI_API_KEY"),
 });
 
-// const supabase = createClient(
-//     Deno.env.get("SUPABASE_URL")!,
-//     Deno.env.get("SUPABASE_SERVICE_KEY")!
-// );
 
 
 
 
-// const templatePdfPath = 'docs/forms/regence.pdf';
+
 const templatePdfPath = 'docs/forms/premera.pdf';
+
+
+// node-qpdf2 requires qpdf to be installed and on the env PATH
+// const pdfInfo = await info({ input: templatePdfPath });
+// if (pdfInfo != "File is not encrypted") {
+//     console.log('decrypting ', templatePdfPath)
+
+
+//     Deno.copyFile(templatePdfPath, templatePdfPath.split('.')[0] + '-encrypted.pdf');
+
+
+//     const pdf = {
+//         input: templatePdfPath,
+//         output: templatePdfPath,
+//         password: "",
+//     }
+
+//     await decrypt(pdf);
+// }
+
 
 const { fields, form, pdfDoc } = await readPdfFormFields(templatePdfPath);
 
@@ -75,9 +89,7 @@ You will be provided images of bills and insurance cards that contain info for t
 Respond with JSON where the key is from the keys provided where the relevant data is in the image.
 `
 
-console.log(systemMessage)
 
-// Deno.exit(0)
 
 const response = await openai.chat.completions.create({
     model: "gpt-4o",
@@ -118,27 +130,11 @@ const response = await openai.chat.completions.create({
 
 const content = response.choices[0].message.content
 
-console.log(content)
+const data = content ? JSON.parse(content) : {}
 
-// const content = `{
-//     "Section.1.PatientFirstName": "David",
-//     "Section.1.PatientLastName": "Kartchner",
-//     "Section.1.PatientDOB": "08/10/1992",
-//     "Section.1.DaytimePhone": "(801) 870-3022",
-//     "Section.1.NameofIllness": "Psychotherapy, 45 min",
-//     "Section.1.ProviderName": "Steve Fogleman, PhD",
-//     "Section.1.InjuryDate": "04/15/2024",
-//     "Section.1.NameofIllness1": "Psychotherapy, 45 min",
-//     "Section.1.ProviderName1": "Steve Fogleman, PhD",
-//     "Section.1.InjuryDate1": "04/22/2024"
-// }
-// `
-// const data = content ? JSON.parse(content) : {}
-
-// await fillAndSavePdfForm(form, pdfDoc, 'docs/output.pdf', data)
+await fillAndSavePdfForm(form, pdfDoc, templatePdfPath.split('.')[0] + '-filled.pdf', data)
 
 
-console.log('done')
 
 
 
