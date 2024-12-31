@@ -1,9 +1,11 @@
 {
   "imports": {
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.3",
     "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.47.3",
     "node-qpdf2": "npm:node-qpdf2@^6.0.0",
     "openai": "npm:openai@^4.76.0",
-    "pdf-lib": "npm:pdf-lib@^1.17.1"
+    "pdf-lib": "npm:pdf-lib@^1.17.1",
+    "zod": "npm:zod@^3.24.1"
   },
   "tasks": {
     "start": "deno run -REN ./src/pdf.ts"
